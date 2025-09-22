@@ -38,7 +38,7 @@ public class SecretResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response getSecretPhrase() {
-        if (DEFAULT_SECRET_PHRASE.equals(encryptedSecretPhrase)) {
+        if (DEFAULT_SECRET_PHRASE.equals(secretPhrase)) {
             String message = String.format("ERROR: The secret phrase was not set. [%s]", encryptedSecretPhrase);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
         }
