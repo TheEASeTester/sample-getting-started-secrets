@@ -33,7 +33,7 @@ public class SecretResource {
 
     @Inject
     @ConfigProperty(name = SECRET_PHRASE_KEY, defaultValue = DEFAULT_SECRET_PHRASE)
-    private String encryptedSecretPhrase;
+    private String secretPhrase;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -42,14 +42,8 @@ public class SecretResource {
             String message = String.format("ERROR: The secret phrase was not set. [%s]", encryptedSecretPhrase);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
         }
-        try {
-            String secretPhrase = PasswordUtil.decode(encryptedSecretPhrase);
-            String message = String.format("%s=%s", SECRET_PHRASE_KEY, secretPhrase);
-            return Response.ok(message).build();    
-        } catch (Exception e) {
-            String message = String.format("ERROR: Could not decrypt the secret phrase. [%s]", encryptedSecretPhrase);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
-        }
+        String message = String.format("%s=%s", SECRET_PHRASE_KEY, secretPhrase);
+        return Response.ok(message).build();    
     }
 
 }
