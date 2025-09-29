@@ -30,6 +30,7 @@ public class SecretResource {
 
     private static final String SECRET_PHRASE_KEY = "io_openliberty_sample_secret_secretPhrase";
     private static final String DEFAULT_SECRET_PHRASE = "defaultSecretPhrase";
+    private static final String ENCRYPTION_IDENTIFIER = "{aes}";
 
     @Inject
     @ConfigProperty(name = SECRET_PHRASE_KEY, defaultValue = DEFAULT_SECRET_PHRASE)
@@ -43,7 +44,7 @@ public class SecretResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
         }
         try {
-            String secretPhrase = PasswordUtil.decode(encryptedSecretPhrase);
+            String secretPhrase = encryptedSecretPhrase.startsWith(ENCRYPTION_IDENTIFIER) ? PasswordUtil.decode(encryptedSecretPhrase) : encryptedSecretPhrase;
             String message = String.format("%s=%s", SECRET_PHRASE_KEY, secretPhrase);
             return Response.ok(message).build();    
         } catch (Exception e) {
